@@ -19,7 +19,7 @@ def create_byseason_df(df):
     
     return byseason_df
 
-all_df = pd.read_csv("all_data.csv")
+all_df = pd.read_csv("dashboard/all_data.csv")
 if 'season_x' in all_df.columns and 'season_y' in all_df.columns:
     # Jika ada, gabungkan nilai dari kedua kolom menjadi satu kolom
     all_df['season'] = all_df['season_x'].fillna(all_df['season_y'])
