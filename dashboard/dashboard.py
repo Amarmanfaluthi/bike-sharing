@@ -5,9 +5,15 @@ import streamlit as st
 from babel.numbers import format_currency
 sns.set(style='dark')
 
-def create_monthly_rent_df(df):
-    monthly_rent_df = df.resample(rule='M', on='dteday').size().reset_index(name='jumlah_sepeda_disewa')
-    return monthly_rent_df
+def create_daily_rent_df(df):
+    daily_rent_df = df.resample(rule='D', on='dteday').agg({
+        "cnt": "sum"
+    })
+    daily_rent_df = daily_rent_df.reset_index()
+    daily_rent_df.rename(columns={
+        "cnt": "rent_count"
+    }, inplace=True)
+    return daily_rent_df
 
 def create_byseason_df(df):
     # Mengubah nilai numerik musim menjadi nama musim
@@ -54,25 +60,25 @@ main_df = all_df[(all_df["dteday"] >= str(start_date)) &
                 (all_df["dteday"] <= str(end_date)) & 
                 (all_df["season"].notnull())]
 
-monthly_rent_df = create_monthly_rent_df(main_df)
+daily_rent_df = create_daily_rent_df(main_df)
 byseason_df = create_byseason_df(main_df)
 
 
 st.header('Bike Sharing :sparkles:')
 
-st.subheader('Monthly Rent')
+st.subheader('daily Rent')
  
 col1, col2 = st.columns(2)
  
 with col1:
-    total_rent = monthly_rent_df.jumlah_sepeda_disewa.sum()
+    total_rent = daily_rent_df.rent_count.sum()
     st.metric("Total Rents", value=total_rent)
  
 with col2:
     fig, ax = plt.subplots(figsize=(16, 8))
     ax.plot(
-        monthly_rent_df["dteday"],
-        monthly_rent_df["jumlah_sepeda_disewa"],
+        daily_rent_df["dteday"],
+        daily_rent_df["rent_count"],
         marker='o', 
         linewidth=2,
         color="#90CAF9"
