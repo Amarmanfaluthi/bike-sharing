@@ -26,18 +26,6 @@ def create_byseason_df(df):
     return byseason_df
 
 all_df = pd.read_csv("all_data.csv")
-# if 'season_x' in all_df.columns and 'season_y' in all_df.columns:
-#     # Jika ada, gabungkan nilai dari kedua kolom menjadi satu kolom
-#     all_df['season'] = all_df['season_x'].fillna(all_df['season_y'])
-#     # Setelah menggabungkan nilai, Anda bisa menghapus kolom season_x dan season_y
-#     all_df.drop(['season_x', 'season_y'], axis=1, inplace=True)
-
-# if 'cnt_x' in all_df.columns and 'cnt_y' in all_df.columns:
-#     # Jika ada, gabungkan nilai dari kedua kolom menjadi satu kolom
-#     all_df['cnt'] = all_df['cnt_x'].fillna(all_df['cnt_y'])
-#     # Setelah menggabungkan nilai, Anda bisa menghapus kolom cnt_x dan cnt_y
-#     all_df.drop(['cnt_x', 'cnt_y'], axis=1, inplace=True)
-
 
 all_df['dteday'] = pd.to_datetime(all_df['dteday'])
 
